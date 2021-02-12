@@ -67,6 +67,6 @@ php artisan key:generate
 
 ```sh
 docker-compose exec web sh
-cd /var/www/html/laravel
+cd /work/laravel
 npm install
 ```
