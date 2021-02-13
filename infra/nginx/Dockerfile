@@ -17,3 +17,5 @@ COPY --from=node /opt /opt
 COPY ./default.conf /etc/nginx/conf.d/default.conf
 
 WORKDIR /work/laravel
+
+RUN npm install -g pnpm

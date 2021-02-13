@@ -8,7 +8,7 @@ Laravel と Vue の開発環境を Docker で構築したリポジトリにな�
 - docker
 - docker-compose
 
-```sh
+```bash
 git --version
 git version 2.25.1
 docker --version
@@ -33,40 +33,61 @@ docker-compose version 1.27.4, build 40524192
 
 1. 以下のコマンドを実行しコンテナを構築。app には任意の名前を設定可能。
 
-```sh
-git clone https://github.com/k-anagosan/laravel-vue-docker.git app
-cd app
-docker-compose up -d --build
+```bash
+[host]git clone https://github.com/k-anagosan/laravel-vue-docker.git app
+[host]cd app
+[host]docker-compose up -d --build
 ```
 
 2. app コンテナに入る。
 
-```sh
-docker-copmose exec app bash
+```bash
+[host]docker-copmose exec app bash
 ```
 
 3. Laravel 含む composer のパッケージをインストール。
 
-```sh
-composer install
+```bash
+[app]composer install
 ```
 
 4. .env ファイルを.env.example から作成
 
-```sh
-cp .env.example .env
+```bash
+[app]cp .env.example .env
 ```
 
 5. .env の APP_KEY を生成
 
-```sh
-php artisan key:generate
+```bash
+[app]php artisan key:generate
 ```
 
 6. web コンテナ内で vue 含む npm パッケージをインストール。
 
-```sh
-docker-compose exec web sh
-cd /work/laravel
-npm install
+```bash
+[host]docker-compose exec web sh
+[web]cd /work/laravel
+[web]pnpm install   #高速化を図りpnpmを採用
+```
+
+7. laravel.log を手動で作成する
+
+```bash
+[host]cd /path/to/app/laravel/storage/logs
+[host]touch laravel.log
+```
+
+8. ローカルの vscode で編集作業を行う場合はプロジェクトファイルの所有者を変更する。また、プロジェクトファイル全体の所有者を www-data とすることで php-fpm がファイル書き込みを行うための権限を付与する。
+
+```bash
+[host]cd /path/to   # プロジェクトルートの親ディレクトリへ移動
+[host]sudo chown -R <ログイン中のユーザー名>:www-data app/
+```
+
+9. 一部ファイルのパーミッション変更
+
+```bash
+[host]cd /path/to/app/laravel/
+[host]sudo chmod -R 775 storage/ bootstrap/cache
 ```
