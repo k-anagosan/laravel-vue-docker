@@ -68,7 +68,7 @@ docker-compose version 1.27.4, build 40524192
 ```bash
 [host]docker-compose exec web sh
 [web]cd /work/laravel
-[web]pnpm install   #高速化を図りpnpmを採用
+[web]npm install
 ```
 
 7. laravel.log を手動で作成する
